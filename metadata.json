@@ -1,0 +1,6 @@
+{
+  "name": "Alfred's Gallery",
+  "description": "An ad-free AI-powered task dashboard, voice-note studio, encrypted cloud vault, and AI theme & wallpaper gallery with Dark & Hacker modes, home widget, and Bluetooth/cross-app sharing.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

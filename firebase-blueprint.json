@@ -1,0 +1,119 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "User preferences, AI tuning settings, theme mode, and E2EE vault salt.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "Firebase Auth UID of the owner." },
+        "displayName": { "type": "string", "description": "User display name." },
+        "email": { "type": "string", "description": "User email address." },
+        "vaultSalt": { "type": "string", "description": "Base64 salt used for PBKDF2 E2EE key derivation." },
+        "encryptionEnabled": { "type": "boolean", "description": "Whether client-side AES-256-GCM encryption is active." },
+        "themeMode": { "type": "string", "enum": ["DARK", "LIGHT", "HACKER"], "description": "Selected visual GUI mode." },
+        "activeAiThemeJson": { "type": "string", "description": "Optional serialized AI-generated color palette JSON." },
+        "aiModelName": { "type": "string", "enum": ["gemini-3.8-flash", "gemini-3.5-flash-lite"], "description": "Selected Gemini model." },
+        "aiTemperature": { "type": "number", "description": "Creativity slider value between 0.0 and 1.0." },
+        "autoStructureVoice": { "type": "boolean", "description": "Automatically extract goals from voice notes with AI." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Server timestamp on creation." },
+        "updatedAt": { "type": "string", "format": "date-time", "description": "Server timestamp on update." }
+      },
+      "required": ["userId", "displayName", "email", "vaultSalt", "encryptionEnabled", "themeMode", "aiModelName", "aiTemperature", "autoStructureVoice", "createdAt", "updatedAt"]
+    },
+    "DailyTask": {
+      "title": "DailyTask",
+      "description": "Encrypted daily goal / task item supporting drag-and-drop lanes and ordering.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "Owner UID." },
+        "titleCipher": { "type": "string", "description": "AES-256-GCM encrypted or encoded task title." },
+        "noteCipher": { "type": "string", "description": "AES-256-GCM encrypted or encoded task details." },
+        "encrypted": { "type": "boolean", "description": "True if payload is AES-GCM encrypted." },
+        "completed": { "type": "boolean", "description": "True when task is completed." },
+        "lane": { "type": "string", "enum": ["FOCUS", "PROGRESS", "DONE"], "description": "Kanban/daily goal lane." },
+        "priority": { "type": "string", "enum": ["HIGH", "MEDIUM", "LOW"], "description": "Task priority." },
+        "category": { "type": "string", "description": "Task category label." },
+        "sortOrder": { "type": "integer", "description": "Drag-and-drop sort order index." },
+        "voiceCaptured": { "type": "boolean", "description": "True if created via voice recognition." },
+        "dueLabel": { "type": "string", "description": "Short schedule label such as Today 6 PM." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Server timestamp on creation." },
+        "updatedAt": { "type": "string", "format": "date-time", "description": "Server timestamp on update." }
+      },
+      "required": ["userId", "titleCipher", "noteCipher", "encrypted", "completed", "lane", "priority", "category", "sortOrder", "voiceCaptured", "dueLabel", "createdAt", "updatedAt"]
+    },
+    "VoiceNote": {
+      "title": "VoiceNote",
+      "description": "Quick voice-recognized note with optional AI summary and client-side encryption.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "Owner UID." },
+        "titleCipher": { "type": "string", "description": "Encrypted note title." },
+        "contentCipher": { "type": "string", "description": "Encrypted note body." },
+        "encrypted": { "type": "boolean", "description": "True if payload is encrypted." },
+        "tags": { "type": "string", "description": "Array of short category tags (max 10)." },
+        "durationSec": { "type": "integer", "description": "Voice recording duration in seconds." },
+        "aiSummaryCipher": { "type": "string", "description": "Optional encrypted AI summary." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Server timestamp on creation." },
+        "updatedAt": { "type": "string", "format": "date-time", "description": "Server timestamp on update." }
+      },
+      "required": ["userId", "titleCipher", "contentCipher", "encrypted", "tags", "durationSec", "createdAt", "updatedAt"]
+    },
+    "GalleryItem": {
+      "title": "GalleryItem",
+      "description": "AI-generated wallpaper or color theme synced across devices.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "Owner UID." },
+        "title": { "type": "string", "description": "Title of wallpaper or theme." },
+        "prompt": { "type": "string", "description": "Prompt used for AI generation." },
+        "itemType": { "type": "string", "enum": ["WALLPAPER", "THEME"], "description": "Gallery item type." },
+        "paletteJson": { "type": "string", "description": "Optional serialized Material 3 hex palette JSON." },
+        "imageBase64": { "type": "string", "description": "Optional compressed JPEG Base64 image data." },
+        "encrypted": { "type": "boolean", "description": "True if payload is encrypted." },
+        "deviceProfile": { "type": "string", "description": "Target device display profile." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Server timestamp on creation." },
+        "updatedAt": { "type": "string", "format": "date-time", "description": "Server timestamp on update." }
+      },
+      "required": ["userId", "title", "prompt", "itemType", "encrypted", "deviceProfile", "createdAt", "updatedAt"]
+    },
+    "VaultMedia": {
+      "title": "VaultMedia",
+      "description": "AES-256-GCM encrypted cloud media backup entry.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "Owner UID." },
+        "fileName": { "type": "string", "description": "Original media filename." },
+        "mimeType": { "type": "string", "description": "Media MIME type." },
+        "sizeBytes": { "type": "integer", "description": "Original byte size." },
+        "cipherPayload": { "type": "string", "description": "AES-256-GCM encrypted Base64 media bytes." },
+        "sha256Checksum": { "type": "string", "description": "SHA-256 integrity checksum." },
+        "encrypted": { "type": "boolean", "description": "Always true for vault backups." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Server timestamp on creation." },
+        "updatedAt": { "type": "string", "format": "date-time", "description": "Server timestamp on update." }
+      },
+      "required": ["userId", "fileName", "mimeType", "sizeBytes", "cipherPayload", "sha256Checksum", "encrypted", "createdAt", "updatedAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/UserProfile" },
+      "description": "User profile, AI preferences, theme settings, and E2EE salt."
+    },
+    "/users/{userId}/tasks/{taskId}": {
+      "schema": { "$ref": "#/entities/DailyTask" },
+      "description": "User-isolated daily goals and tasks."
+    },
+    "/users/{userId}/notes/{noteId}": {
+      "schema": { "$ref": "#/entities/VoiceNote" },
+      "description": "User-isolated voice notes."
+    },
+    "/users/{userId}/wallpapers/{wallpaperId}": {
+      "schema": { "$ref": "#/entities/GalleryItem" },
+      "description": "User-isolated AI wallpapers and themes."
+    },
+    "/users/{userId}/vault_media/{mediaId}": {
+      "schema": { "$ref": "#/entities/VaultMedia" },
+      "description": "User-isolated encrypted media backups."
+    }
+  }
+}

@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Alfred\'s Gallery</string>
+    <string name="contact_phone">0553862266</string>
+    <string name="contact_email">alfredxornam@gmail.com</string>
+    <string name="widget_description">Track daily encrypted goals and capture instant voice notes from your home screen.</string>
+    <string name="widget_default_title">Alfred\'s Daily Goals</string>
+    <string name="sign_in_tagline">Encrypted Daily Goals, Voice Studio &amp; AI Wallpaper Vault</string>
+    <string name="ad_free_badge">100% Ad-Free • AES-256-GCM Encrypted Sync</string>
+</resources>
